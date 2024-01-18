@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fire Detection System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1> <b>Fire Detection System </b></h1>
+</header>
+
+   <div class="container">
+    <div class="row">
+      <div class="box1">
+      <span class="box-text1"><b>Temperature:</b></span>
+      </div>
+      <div class="box2" id="box1"></div>
+    </div>
+    <div class="row">
+      <div class="box1">
+      <span class="box-text2"><b>Fire Detected:</b></span>
+      </div>
+      <div class="box2" id="box2"></div>
+    </div>
+    <div class="row">
+      <div class="box3" id="text">
+      <span class="box-text3"><b>Fire detected! Take action immediately.</b></span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module"> //JavaScript Code
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  import { getDatabase, ref, get, set, child } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-analytics.js";
+
+
+  // Initialize Firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyC82REO7UVbySbCnUnZ6x6jj7BXjb9uX_E",
+    authDomain: "fire-detection-system-14d92.firebaseapp.com",
+    databaseURL: "https://fire-detection-system-14d92-default-rtdb.firebaseio.com",
+    projectId: "fire-detection-system-14d92",
+    storageBucket: "fire-detection-system-14d92.appspot.com",
+    messagingSenderId: "340040551234",
+    appId: "1:340040551234:web:ee7434995d15075e1996db",
+    measurementId: "G-HGY0J0392Z"
+  };
+  
+  const app = initializeApp(firebaseConfig);
+
+  // Access the Firebase Realtime Database
+  const database = getDatabase(app);
+  
+  // Retrieve data from Firebase and populate boxes
+  const box1 = document.getElementById('box1');
+  const box2 = document.getElementById('box2');
+
+  const dataRef = ref(database, 'data');
+
+  get(dataRef)
+  .then(snapshot => {
+  const data = snapshot.val();
+
+  if (data) {
+  const box1Data = data.box1;
+  const box2Data = data.box2;
+
+  // Set the data at the center of the respective boxes
+  box1.innerHTML = `<br><br><strong>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp${box1Data}</strong>`;
+  box2.innerHTML = `<br><br><strong>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp${box2Data}</strong>`;
+
+  //alert message 
+  if (box2Data === "Yes") { 
+  document.getElementById('text').style.display = 'block'; 
+} else { 
+  document.getElementById('text').style.display = 'none'; 
+} 
+
+  } else {
+          console.log('No data available.');
+        }
+      })
+      .catch(error => {
+        console.error('Error retrieving data:', error);
+      });
+
+  </script>
+</body>
+</html>
